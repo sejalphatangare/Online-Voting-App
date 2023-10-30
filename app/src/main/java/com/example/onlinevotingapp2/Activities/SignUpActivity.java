@@ -27,11 +27,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.checkerframework.checker.units.qual.A;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,6 +48,8 @@ public class SignUpActivity extends AppCompatActivity {
     private Button signUpBtn;
     private Uri mainUri=null;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseStorage firebaseStorage;
 
     public static final String PREFERENCES = "prefKey";
     public static final String Name="nameKey";
@@ -61,6 +69,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         sharedPreferences= getApplicationContext().getSharedPreferences(PREFERENCES,MODE_PRIVATE);
 
+        firebaseFirestore=FirebaseFirestore.getInstance();
+        firebaseStorage=FirebaseStorage.getInstance();
         findViewById(R.id.loginredirectText).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +117,13 @@ public class SignUpActivity extends AppCompatActivity {
                         && !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
                         && !TextUtils.isEmpty(aadharno)){
 
+                    SharedPreferences.Editor pref = sharedPreferences.edit();
+                    pref.putString(Name, name);
+                    pref.putString(Password, password);
+                    pref.putString(Email, email);
+                    pref.putString(AadharNo, aadharno);
+                    pref.putString(Image, mainUri.toString());
+                    pref.apply();
                     createUser(email,password);
 
                 }else{
@@ -121,9 +138,15 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    // password must be 6 or greater than 6
-                    Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                    verifyEmail();
+                    if(mainUri!=null) {
+                        // password must be 6 or greater than 6
+                        uploadUserDataToDatabase(email, password);
+                        uploadImageToStorage(mAuth.getUid());
+                        Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                        verifyEmail();
+                    }else{
+                        Toast.makeText(SignUpActivity.this, "Profile picture is missing.", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(SignUpActivity.this, "Failed Try Again!", Toast.LENGTH_SHORT).show();
                 }
@@ -136,6 +159,57 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    private void uploadUserDataToDatabase(String email, String password) {
+        // Upload user data to the database (Firestore or Firebase Realtime Database)
+        // You should use a Map or a data model to structure your data
+        // For example, create a map containing the user's name, email, and other details
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("name", name);
+        userData.put("email", email);
+        userData.put("password", password);
+        userData.put("aadharno", aadharno);
+        userData.put("image", mainUri.toString());
+
+        // Upload the user data to the database using Firestore
+        String uid = mAuth.getUid();
+        assert uid != null;
+        firebaseFirestore.collection("Users")
+                .document(uid)
+                .set(userData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Data uploaded successfully
+                            Toast.makeText(SignUpActivity.this, "Data saved successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Data not stored", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+    private void uploadImageToStorage(String uid) {
+        // Create a reference to the Firebase Storage location where you want to store the image
+        StorageReference imagePath = FirebaseStorage.getInstance().getReference()
+                .child("user_images")
+                .child(uid + ".jpg");  // You can change the path and file name as needed
+
+        // Upload the image to Firebase Storage
+        imagePath.putFile(Uri.parse(mainUri.toString())).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Image uploaded successfully
+                    Toast.makeText(SignUpActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                    // Optionally, you can navigate to the next screen or perform any other action
+                    // after the image is uploaded.
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     private void verifyEmail() {
         FirebaseUser user=mAuth.getCurrentUser();
         if(user!=null){
@@ -149,7 +223,7 @@ public class SignUpActivity extends AppCompatActivity {
                         pref.putString(Email,email);
                         pref.putString(AadharNo,aadharno);
                         pref.putString(Image,mainUri.toString());
-                        pref.commit();
+                        pref.apply();
 
 
 //                        email sent
@@ -184,6 +258,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
+                assert result != null;
                 mainUri = result.getUri();
                 userProfile.setImageURI(mainUri);
 

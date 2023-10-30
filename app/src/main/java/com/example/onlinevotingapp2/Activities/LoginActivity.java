@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String Password="passwordKey";
     public static final String AadharNo="aadharnoKey";
     public static final String Image="imageKey";
+    public static final String UploadData="uploaddata";
 
     SharedPreferences sharedPreferences;
 
@@ -92,12 +93,28 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+        forgetPassword.findViewById(R.id.forget_password).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
+            }
+        });
     }
 
     private void verifyEmail() {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         if(user.isEmailVerified()){
+
+            boolean bol=sharedPreferences.getBoolean(UploadData,false);
+            if(bol){
+//                if email is verified and data is already uploaded then we dont need to upload it again
+                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                finish();
+                
+            }else{
+
+
 
             String name=sharedPreferences.getString(Name,null);
             String password=sharedPreferences.getString(Password,null);
@@ -136,6 +153,10 @@ public class LoginActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if(task.isSuccessful()){
+                                                        sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCES,MODE_PRIVATE);
+                                                        SharedPreferences.Editor pref=sharedPreferences.edit();
+                                                        pref.putBoolean(UploadData,true);
+                                                        pref.apply();
                                                         startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                                                         finish();
                                                     }else{
@@ -154,6 +175,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
 
+            }
 
         }else{
             mAuth.signOut();
