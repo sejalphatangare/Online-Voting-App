@@ -94,5 +94,13 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(HomeActivity.this,Create_Candidate_Activity.class));
+            }
+        });
     }
 }

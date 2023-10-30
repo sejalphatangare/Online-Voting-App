@@ -191,7 +191,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void uploadImageToStorage(String uid) {
         // Create a reference to the Firebase Storage location where you want to store the image
         StorageReference imagePath = FirebaseStorage.getInstance().getReference()
-                .child("user_images")
+                .child("image_profile")
                 .child(uid + ".jpg");  // You can change the path and file name as needed
 
         // Upload the image to Firebase Storage
