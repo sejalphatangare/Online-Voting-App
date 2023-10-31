@@ -1,16 +1,16 @@
 package com.example.onlinevotingapp2.Adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,26 +18,32 @@ import com.bumptech.glide.Glide;
 import com.example.onlinevotingapp2.Activities.VotingActivity;
 import com.example.onlinevotingapp2.Model.Candidate;
 import com.example.onlinevotingapp2.R;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.ViewHolder> {
+public class CandidateResultAdapter extends RecyclerView.Adapter<CandidateResultAdapter.ViewHolder> {
 
     private Context context;
     private List<Candidate> list;
+    private FirebaseFirestore firebaseFirestore;
 
-    public CandidateAdapter(Context context, List<Candidate> list) {
+    public CandidateResultAdapter(Context context, List<Candidate> list) {
         this.context = context;
         this.list = list;
+        firebaseFirestore=FirebaseFirestore.getInstance();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context)
-                .inflate(R.layout.candidate_layout,parent,false);
+                .inflate(R.layout.candidate_result_layout,parent,false);
         return new ViewHolder(view);
     }
 
@@ -49,21 +55,25 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
 
         Glide.with(context).load(list.get(position).getImage()).into(holder.image);
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context, VotingActivity.class);
-                intent.putExtra("name",list.get(position).getName());
-                intent.putExtra("party",list.get(position).getParty());
-                intent.putExtra("post",list.get(position).getPosition());
-                intent.putExtra("image",list.get(position).getImage());
-                intent.putExtra("id",list.get(position).getId());
+        firebaseFirestore.collection("Candidate/"+list.get(position).getId()+"/Vote")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot documentSnapshots, @Nullable FirebaseFirestoreException error) {
+                        if(!documentSnapshots.isEmpty()){
+                            int count = documentSnapshots.size();
+                            Candidate candidate = list.get(position);
+                            candidate.setCount(count);
+                            list.set(position,candidate);
 
-                context.startActivity(intent);
-//                Activity activity=(Activity) context;
-//                activity.finish();
-            }
-        });
+                            notifyDataSetChanged();
+                            Log.d("CandidateResultAdapter", "Vote count updated: " + count);
+
+
+                        }
+                    }
+                });
+
+        holder.result.setText("Result : "+list.get(position).getCount());
 
 
     }
@@ -75,9 +85,8 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private CircleImageView image;
-        private TextView name,position,party;
-        private CardView cardView;
-//        private Button voteBtn;
+        private TextView name,position,party,result;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -85,8 +94,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
             name=itemView.findViewById(R.id.name);
             position=itemView.findViewById(R.id.post);
             party=itemView.findViewById(R.id.party);
-//            voteBtn=itemView.findViewById(R.id.vote_btn);
-            cardView=itemView.findViewById(R.id.card_view);
+            result=itemView.findViewById(R.id.candidate_result);
         }
     }
 }

@@ -62,7 +62,13 @@ public class HomeActivity extends AppCompatActivity {
 //        }
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            uid=user.getUid();
+        }else {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
 
         circleImg = findViewById(R.id.circle_image);
         nameTxt = findViewById(R.id.name);

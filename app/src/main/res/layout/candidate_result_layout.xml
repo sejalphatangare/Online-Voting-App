@@ -63,20 +63,21 @@
         app:layout_constraintStart_toStartOf="@+id/party"
         app:layout_constraintTop_toBottomOf="@+id/party" />
 
-<!--    <Button-->
-<!--        android:id="@+id/vote_btn"-->
-<!--        android:layout_width="174dp"-->
-<!--        android:layout_height="62dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:layout_margin="16dp"-->
-<!--        android:backgroundTint="#673AB7"-->
-<!--        android:padding="16dp"-->
-<!--        android:text="Vote"-->
-<!--        app:cornerRadius="20dp"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/post"-->
-<!--        app:layout_constraintHorizontal_bias="0.407"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/post"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/post" />-->
+
+        <TextView
+            android:id="@+id/candidate_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp"
+            android:text="Result : 0"
+            android:textColor="#673AB7"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/post"
+            app:layout_constraintEnd_toEndOf="@+id/post"
+            app:layout_constraintTop_toBottomOf="@+id/post" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
