@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String AadharNo="aadharnoKey";
     public static final String Image="imageKey";
     public static final String UploadData="uploaddata";
+    public static final String IsLogIn="isLogin";
 
     SharedPreferences sharedPreferences;
 
@@ -84,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         if(task.isSuccessful()){
                             verifyEmail();
+//                            SharedPreferences.Editor pref = sharedPreferences.edit();
+//                            pref.putBoolean(IsLogIn, true);
+//                            pref.apply();
                         }else{
                             Toast.makeText(LoginActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                         }
@@ -105,6 +109,12 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         if(user.isEmailVerified()){
+            // After a successful login
+//            SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putBoolean("IsLogIn", true);
+//            editor.apply();
+
 
             boolean bol=sharedPreferences.getBoolean(UploadData,false);
             if(bol){

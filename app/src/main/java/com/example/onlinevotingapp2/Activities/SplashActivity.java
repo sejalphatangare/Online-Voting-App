@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.onlinevotingapp2.MainActivity;
 import com.example.onlinevotingapp2.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -22,10 +24,17 @@ public class SplashActivity extends AppCompatActivity {
     TextView appname;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user != null) {
+//            // User is already logged in, navigate to the main part of the app
+//            startActivity(new Intent(this, HomeActivity.class));
+//            finish(); // Close the current activity to prevent going back to the login screen
+//        }
     }
 
     @Override

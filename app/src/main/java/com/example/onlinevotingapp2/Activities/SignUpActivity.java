@@ -1,5 +1,7 @@
 package com.example.onlinevotingapp2.Activities;
 
+import static com.example.onlinevotingapp2.Activities.SplashActivity.IsLogIn;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -123,6 +125,7 @@ public class SignUpActivity extends AppCompatActivity {
                     pref.putString(Email, email);
                     pref.putString(AadharNo, aadharno);
                     pref.putString(Image, mainUri.toString());
+                    pref.putBoolean(IsLogIn, true);
                     pref.apply();
                     createUser(email,password);
 
