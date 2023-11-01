@@ -59,17 +59,22 @@ public class CandidateResultAdapter extends RecyclerView.Adapter<CandidateResult
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot documentSnapshots, @Nullable FirebaseFirestoreException error) {
-                        if(!documentSnapshots.isEmpty()){
-                            int count = documentSnapshots.size();
-                            Candidate candidate = list.get(position);
-                            candidate.setCount(count);
-                            list.set(position,candidate);
+                        if(documentSnapshots!=null){
+                            if(!documentSnapshots.isEmpty()){
+                                int count = documentSnapshots.size();
+                                Candidate candidate = list.get(position);
+                                candidate.setCount(count);
+                                list.set(position,candidate);
 
-                            notifyDataSetChanged();
-                            Log.d("CandidateResultAdapter", "Vote count updated: " + count);
+                                notifyDataSetChanged();
+                                Log.d("CandidateResultAdapter", "Vote count updated: " + count);
 
+
+                            }
+                        }else{
 
                         }
+
                     }
                 });
 

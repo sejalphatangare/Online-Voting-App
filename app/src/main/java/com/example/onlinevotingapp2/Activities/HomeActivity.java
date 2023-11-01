@@ -111,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
                                 voteBtn.setVisibility(View.GONE);
                             } else {
                                 createBtn.setVisibility(View.GONE);
-                                startBtn.setVisibility(View.VISIBLE);
+                                startBtn.setVisibility(View.GONE);
                                 voteBtn.setVisibility(View.VISIBLE);
                                 Log.d("UserRole", "User is not admin");
                             }
@@ -139,6 +139,13 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this,AllCandidateActivity.class));
             }
         });
+
+        voteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this,AllCandidateActivity.class));
+            }
+        });
     }
 
     @Override
@@ -153,6 +160,8 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
         SharedPreferences.Editor pref = sharedPreferences.edit();
         if (id == R.id.show_result) {
+            startActivity(new Intent(HomeActivity.this,ResultActivity.class));
+
             return true;
         } else if (id == R.id.log_out) {
             FirebaseAuth.getInstance().signOut();

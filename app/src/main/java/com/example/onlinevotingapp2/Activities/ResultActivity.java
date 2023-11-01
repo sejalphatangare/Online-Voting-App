@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.onlinevotingapp2.Adapter.CandidateAdapter;
@@ -31,12 +34,14 @@ public class ResultActivity extends AppCompatActivity {
     private List<Candidate> list;
     private CandidateResultAdapter adapter;
     private FirebaseFirestore firebaseFirestore;
+    private TextView warningtxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
         resultRV=findViewById(R.id.result_rv);
+        warningtxt=findViewById(R.id.warning_text);
         firebaseFirestore=FirebaseFirestore.getInstance();
 
 
@@ -70,5 +75,36 @@ public class ResultActivity extends AppCompatActivity {
                     });
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseFirestore.getInstance().collection("Users")
+                .document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        String finish = task.getResult().getString("finish");
+
+
+                        if(finish!=null){
+                            if(!finish.equals("voted")){
+                                resultRV.setVisibility(View.GONE);
+                                warningtxt.setVisibility(View.VISIBLE);
+                            }else{
+                                resultRV.setVisibility(View.VISIBLE);
+                                warningtxt.setVisibility(View.GONE);
+                            }
+                        }else{
+                            warningtxt.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                });
     }
 }

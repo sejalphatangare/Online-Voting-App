@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -68,6 +69,31 @@ public class AllCandidateActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseFirestore.getInstance().collection("Users")
+                .document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        String finish = task.getResult().getString("finish");
+                        if(finish!=null){
+                            if(finish.equals("voted")){
+                                Toast.makeText(AllCandidateActivity.this, "Your vote is counted already", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(AllCandidateActivity.this, ResultActivity.class));
+                                finish();
+                            }
+                        }
+
+                    }
+                });
     }
 }
