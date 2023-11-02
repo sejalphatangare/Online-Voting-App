@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -36,6 +37,24 @@ public class AllCandidateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_candidate);
 
+        Intent intent=getIntent();
+        String electionId=intent.getStringExtra("ele_name");
+//        String electionName=intent.getStringExtra("name");
+//        Bundle extras = intent.getExtras();
+//        if (extras != null) {
+//            // Iterate through the keys and print the corresponding values
+//            for (String key : extras.keySet()) {
+//                Object value = extras.get(key);
+//                if (value != null) {
+//                    // Print the key and value
+////                    System.out.println();
+//                    Log.d(electionId,"Key: " + key + ", Value: " + value.toString());
+//                }
+//            }
+//        }
+
+
+
         candidateRV=findViewById(R.id.candidates_rv);
         startBtn=findViewById(R.id.start);
         firebaseFirestore=FirebaseFirestore.getInstance();
@@ -47,13 +66,22 @@ public class AllCandidateActivity extends AppCompatActivity {
         candidateRV.setAdapter(adapter);
 
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            loadCandidateForElection(electionId);
+
+        }
+
+    }
+    private void loadCandidateForElection(String electionId){
+        if(electionId!=null){
             firebaseFirestore.collection("Candidate")
+                    .whereEqualTo("electionId",electionId)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
                                 for(DocumentSnapshot snapshot: Objects.requireNonNull(task.getResult())){
+                                    Log.d("CandidateActivity", "Candidate name: " + snapshot.getString("name"));
                                     list.add(new Candidate(
                                             snapshot.getString("name"),
                                             snapshot.getString("party"),
@@ -71,29 +99,29 @@ public class AllCandidateActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        FirebaseFirestore.getInstance().collection("Users")
-                .document(uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                        String finish = task.getResult().getString("finish");
-                        if(finish!=null){
-                            if(finish.equals("voted")){
-                                Toast.makeText(AllCandidateActivity.this, "Your vote is counted already", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(AllCandidateActivity.this, ResultActivity.class));
-                                finish();
-                            }
-                        }
-
-                    }
-                });
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//        FirebaseFirestore.getInstance().collection("Users")
+//                .document(uid)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//
+//                        String finish = task.getResult().getString("finish");
+//                        if(finish!=null){
+//                            if(finish.equals("voted")){
+//                                Toast.makeText(AllCandidateActivity.this, "Your vote is counted already", Toast.LENGTH_SHORT).show();
+//                                startActivity(new Intent(AllCandidateActivity.this, ResultActivity.class));
+//                                finish();
+//                            }
+//                        }
+//
+//                    }
+//                });
+//    }
 }

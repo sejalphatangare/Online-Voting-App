@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/backgroundsignup"
+    android:background="@drawable/bgsignuplog"
     android:orientation="vertical"
     tools:context=".Activities.LoginActivity">
 

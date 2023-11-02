@@ -56,12 +56,13 @@
 
 
     <Button
-        android:id="@+id/admin_btn"
+        android:id="@+id/create_election_btn"
         android:layout_width="182dp"
         android:layout_height="76dp"
+        android:layout_marginTop="44dp"
         android:backgroundTint="#673AB7"
         android:padding="16dp"
-        android:text="Create Candidate"
+        android:text="Create Election"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:visibility="gone"
@@ -69,6 +70,22 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/circle_image"
         app:layout_constraintTop_toBottomOf="@+id/circle_image" />
+
+    <Button
+        android:id="@+id/admin_btn"
+        android:layout_width="182dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#673AB7"
+        android:padding="16dp"
+        android:text="Create Candidate"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/create_election_btn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/create_election_btn"
+        app:layout_constraintTop_toBottomOf="@+id/create_election_btn" />
 
     <Button
         android:id="@+id/candidate_create_voting"
@@ -84,7 +101,7 @@
         android:padding="16dp"
         android:text="Start Voting"
         android:textAllCaps="false"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,6 +109,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.274" />
+
+    <Button
+        android:id="@+id/manage_election_btn"
+        android:layout_width="182dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#673AB7"
+        android:padding="16dp"
+        android:text="Manage Election"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/admin_btn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/admin_btn"
+        app:layout_constraintTop_toBottomOf="@+id/admin_btn" />
+
+    <Button
+        android:id="@+id/showallelections"
+        android:layout_width="182dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#673AB7"
+        android:padding="16dp"
+        android:text="Show All Elections"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/manage_election_btn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/manage_election_btn"
+        app:layout_constraintTop_toBottomOf="@+id/manage_election_btn" />
 
     <Button
         android:id="@+id/give_vote"

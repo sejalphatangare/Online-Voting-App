@@ -91,7 +91,7 @@ public class VotingActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    startActivity(new Intent(VotingActivity.this,ResultActivity.class));
+                                    startActivity(new Intent(VotingActivity.this,AllCandidateActivity.class));
                                     finish();
                                 }else{
                                     Toast.makeText(VotingActivity.this, "Voted Succesfully", Toast.LENGTH_SHORT).show();

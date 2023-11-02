@@ -23,15 +23,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -41,12 +45,13 @@ public class Create_Candidate_Activity extends AppCompatActivity {
 
     private CircleImageView candidateImg;
     private EditText candidateName,candidateParty;
-    private Spinner candidateSpinner;
+    private Spinner candidateSpinner,electionSpinner;
     private String[] candPost={"President","Vice-President"};
     private Button submitButton;
     private Uri mainUri=null;
-    StorageReference reference;
-    FirebaseFirestore firebaseFirestore;
+    private StorageReference reference;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
 
 
     @Override
@@ -58,16 +63,20 @@ public class Create_Candidate_Activity extends AppCompatActivity {
         reference= FirebaseStorage.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
+        firebaseAuth = FirebaseAuth.getInstance();
         candidateImg=findViewById(R.id.candidate_image);
         candidateName=findViewById(R.id.candidate_name);
         candidateParty=findViewById(R.id.candidate_party_name);
         candidateSpinner=findViewById(R.id.candidate_spinner);
+        electionSpinner=findViewById(R.id.election_spinner);
         submitButton=findViewById(R.id.candidate_submit_btn);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,candPost);
 
         candidateSpinner.setAdapter(adapter);
+
+        fetchElectionsAndPopulateSpinner();
 
         candidateImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +91,7 @@ public class Create_Candidate_Activity extends AppCompatActivity {
                 String name=candidateName.getText().toString().trim();
                 String party=candidateParty.getText().toString().trim();
                 String post=candidateSpinner.getSelectedItem().toString();
-
+                String electionId=electionSpinner.getSelectedItem().toString();
 
                 if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(party) && !TextUtils.isEmpty(post) && mainUri!=null){
 
@@ -104,6 +113,7 @@ public class Create_Candidate_Activity extends AppCompatActivity {
                                         map.put("party",party);
                                         map.put("post",post);
                                         map.put("image",uri.toString());
+                                        map.put("electionId",electionId);
                                         map.put("timestamp", FieldValue.serverTimestamp());
 
                                         firebaseFirestore.collection("Candidate")
@@ -142,6 +152,32 @@ public class Create_Candidate_Activity extends AppCompatActivity {
                 .start(this);
 
 
+    }
+    private void fetchElectionsAndPopulateSpinner() {
+        // Fetch the list of elections from Firestore
+        firebaseFirestore.collection("Elections")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> electionNames = new ArrayList<>();
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                String electionName = snapshot.getString("name");
+                                electionNames.add(electionName);
+                            }
+                            // Create an ArrayAdapter and set it to the electionSpinner
+                            ArrayAdapter<String> electionAdapter = new ArrayAdapter<>(
+                                    Create_Candidate_Activity.this,
+                                    android.R.layout.simple_dropdown_item_1line,
+                                    electionNames
+                            );
+                            electionSpinner.setAdapter(electionAdapter);
+                        } else {
+                            Toast.makeText(Create_Candidate_Activity.this, "Elections not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override

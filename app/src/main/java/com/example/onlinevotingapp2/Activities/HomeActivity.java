@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView nameTxt, aadharNoTxt;
     private String uid;
     private FirebaseFirestore firebaseFirestore;
-    private Button createBtn, voteBtn,startBtn;
+    private Button createBtn, voteBtn,startBtn,createElectionBtn, manageElectionBtn,showAllElections;
 
 
     @Override
@@ -76,6 +76,9 @@ public class HomeActivity extends AppCompatActivity {
         createBtn = findViewById(R.id.admin_btn);
         voteBtn = findViewById(R.id.give_vote);
         startBtn=findViewById(R.id.candidate_create_voting);
+        createElectionBtn = findViewById(R.id.create_election_btn);
+        manageElectionBtn = findViewById(R.id.manage_election_btn);
+        showAllElections = findViewById(R.id.showallelections);
 
         sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor pref = sharedPreferences.edit();
@@ -107,17 +110,25 @@ public class HomeActivity extends AppCompatActivity {
                             assert name != null;
                             if (name.equals("admin")) {
                                 createBtn.setVisibility(View.VISIBLE);
+                                createElectionBtn.setVisibility(View.VISIBLE);
+                                manageElectionBtn.setVisibility(View.VISIBLE);
                                 startBtn.setVisibility(View.GONE);
                                 voteBtn.setVisibility(View.GONE);
+                                showAllElections.setVisibility(View.VISIBLE);
                             } else {
                                 createBtn.setVisibility(View.GONE);
                                 startBtn.setVisibility(View.GONE);
                                 voteBtn.setVisibility(View.VISIBLE);
+                                createElectionBtn.setVisibility(View.GONE);
+                                manageElectionBtn.setVisibility(View.GONE);
+                                showAllElections.setVisibility(View.GONE);
+
                                 Log.d("UserRole", "User is not admin");
                             }
                             nameTxt.setText(name);
                             aadharNoTxt.setText(aadharno);
 
+                            Log.d("ImageURL", "Image URL: " + image);
                             Glide.with(HomeActivity.this).load(image).into(circleImg);
 
                         } else {
@@ -144,6 +155,33 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeActivity.this,AllCandidateActivity.class));
+            }
+        });
+
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, Create_Candidate_Activity.class));
+            }
+        });
+
+        createElectionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, Create_Election_Activity.class));
+            }
+        });
+
+        manageElectionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, ManageElectionActivity.class));
+            }
+        });
+        showAllElections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this,ElectionActivity.class));
             }
         });
     }
