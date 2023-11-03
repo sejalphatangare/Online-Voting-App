@@ -9,12 +9,23 @@ public class Candidate {
     int count=0;
 
 
-    public Candidate(String name, String party, String position, String image,String id) {
+    private String ele_name;
+
+    public Candidate(String name, String party, String position, String image,String id,String ele_name) {
         this.name = name;
         this.party = party;
         this.position = position;
         this.image = image;
         this.id= id;
+        this.ele_name=ele_name;
+    }
+
+    public String getEle_name() {
+        return ele_name;
+    }
+
+    public void setEle_name(String ele_name) {
+        this.ele_name = ele_name;
     }
 
     public int getCount() {

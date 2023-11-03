@@ -118,7 +118,6 @@ public class ElectionActivity extends AppCompatActivity {
 
                         // Start the AllCandidateActivity with the selected election's ID
                         Intent intent = new Intent(ElectionActivity.this, AllCandidateActivity.class);
-                        intent.putExtra("electionId", "Komal");
 
                         Log.d("Election","selected : "+selectedElection);
 

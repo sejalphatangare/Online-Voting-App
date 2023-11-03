@@ -64,6 +64,7 @@ public class ResultActivity extends AppCompatActivity {
                                             snapshot.getString("party"),
                                             snapshot.getString("post"),
                                             snapshot.getString("image"),
+                                            snapshot.getString("electionId"),
                                             snapshot.getId()   //itwill get document id
                                     ));
                                 }

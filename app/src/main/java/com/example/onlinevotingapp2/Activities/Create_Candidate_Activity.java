@@ -93,6 +93,7 @@ public class Create_Candidate_Activity extends AppCompatActivity {
                 String post=candidateSpinner.getSelectedItem().toString();
                 String electionId=electionSpinner.getSelectedItem().toString();
 
+
                 if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(party) && !TextUtils.isEmpty(post) && mainUri!=null){
 
 

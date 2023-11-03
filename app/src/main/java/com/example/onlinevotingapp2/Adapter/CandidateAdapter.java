@@ -46,6 +46,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
         holder.name.setText(list.get(position).getName());
         holder.party.setText(list.get(position).getParty());
         holder.position.setText(list.get(position).getPosition());
+        holder.ele_name.setText(list.get(position).getEle_name());
 
         Glide.with(context).load(list.get(position).getImage()).into(holder.image);
 
@@ -58,6 +59,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
                 intent.putExtra("post",list.get(position).getPosition());
                 intent.putExtra("image",list.get(position).getImage());
                 intent.putExtra("id",list.get(position).getId());
+                intent.putExtra("ele_name",list.get(position).getEle_name());
 
                 context.startActivity(intent);
 //                Activity activity=(Activity) context;
@@ -75,9 +77,9 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private CircleImageView image;
-        private TextView name,position,party;
+        private TextView name,position,party,ele_name;
         private CardView cardView;
-//        private Button voteBtn;
+        //        private Button voteBtn;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -87,6 +89,8 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.View
             party=itemView.findViewById(R.id.party);
 //            voteBtn=itemView.findViewById(R.id.vote_btn);
             cardView=itemView.findViewById(R.id.card_view);
+            ele_name=itemView.findViewById(R.id.ele_name);
+
         }
     }
 }
