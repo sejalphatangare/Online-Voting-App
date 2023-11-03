@@ -70,7 +70,6 @@ public class AllCandidateActivity extends AppCompatActivity {
 
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             loadCandidateForElection(electionId);
-
         }
 
     }
@@ -116,11 +115,14 @@ public class AllCandidateActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         List<String> voteList = (List<String>)(documentSnapshot.get("votelist"));
-                        if (voteList.contains(electionId)) {
-                            Toast.makeText(AllCandidateActivity.this, "You have already voted for this election.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(AllCandidateActivity.this, ElectionActivity.class));
-                            finish();
+                        if (voteList != null && voteList.contains(electionId)) {
+                            if (voteList.contains(electionId)) {
+                                Toast.makeText(AllCandidateActivity.this, "You have already voted for this election.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(AllCandidateActivity.this, ElectionActivity.class));
+                                finish();
+                            }
                         }
+
 
                     }
                 });

@@ -18,6 +18,7 @@ import com.example.onlinevotingapp2.Adapter.CandidateResultAdapter;
 import com.example.onlinevotingapp2.Model.Candidate;
 import com.example.onlinevotingapp2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,6 +36,7 @@ public class ResultActivity extends AppCompatActivity {
     private CandidateResultAdapter adapter;
     private FirebaseFirestore firebaseFirestore;
     private TextView warningtxt;
+    private String electionId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,22 +52,35 @@ public class ResultActivity extends AppCompatActivity {
         resultRV.setLayoutManager(new LinearLayoutManager(ResultActivity.this));
         resultRV.setAdapter(adapter);
 
+        Intent intent=getIntent();
+        electionId=intent.getStringExtra("ele_name");
+        Log.d("ResultActivity","ele_name"+electionId);
+
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            loadCandidateForElection(electionId);
+
+        }
+    }
+
+    private void loadCandidateForElection(String electionId) {
+        if(electionId!=null){
             firebaseFirestore.collection("Candidate")
+                    .whereEqualTo("electionId",electionId)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
                                 for(DocumentSnapshot snapshot: Objects.requireNonNull(task.getResult())){
-                                    Log.d("ResultActivity", "Candidate data: " + snapshot.getData());
+                                    Log.d("CandidateActivity", "Candidate name: " + snapshot.getString("name"));
                                     list.add(new Candidate(
                                             snapshot.getString("name"),
                                             snapshot.getString("party"),
                                             snapshot.getString("post"),
                                             snapshot.getString("image"),
-                                            snapshot.getString("electionId"),
-                                            snapshot.getId()   //itwill get document id
+                                            snapshot.getId(),
+                                            snapshot.getString("electionId")
+                                            //itwill get document id
                                     ));
                                 }
                                 adapter.notifyDataSetChanged();
@@ -75,7 +90,6 @@ public class ResultActivity extends AppCompatActivity {
                         }
                     });
         }
-
     }
 
     @Override
@@ -84,24 +98,17 @@ public class ResultActivity extends AppCompatActivity {
 
         String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        FirebaseFirestore.getInstance().collection("Users")
+        firebaseFirestore.collection("Users")
                 .document(uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        String finish = task.getResult().getString("finish");
-
-
-                        if(finish!=null){
-                            if(!finish.equals("voted")){
-                                resultRV.setVisibility(View.GONE);
-                                warningtxt.setVisibility(View.VISIBLE);
-                            }else{
-                                resultRV.setVisibility(View.VISIBLE);
-                                warningtxt.setVisibility(View.GONE);
-                            }
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        List<String> voteList = (List<String>)(documentSnapshot.get("votelist"));
+                        if (voteList.contains(electionId)) {
+                            resultRV.setVisibility(View.VISIBLE);
+                            warningtxt.setVisibility(View.GONE);
                         }else{
+                            resultRV.setVisibility(View.GONE);
                             warningtxt.setVisibility(View.VISIBLE);
                         }
 

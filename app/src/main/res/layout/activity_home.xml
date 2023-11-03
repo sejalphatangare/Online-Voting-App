@@ -130,16 +130,16 @@
         android:id="@+id/showallelections"
         android:layout_width="182dp"
         android:layout_height="76dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="124dp"
         android:backgroundTint="#673AB7"
         android:padding="16dp"
-        android:text="Show All Elections"
+        android:text="Start Voting"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/manage_election_btn"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/manage_election_btn"
         app:layout_constraintTop_toBottomOf="@+id/manage_election_btn" />
 
     <Button

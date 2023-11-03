@@ -117,11 +117,11 @@ public class ElectionActivity extends AppCompatActivity {
                         Election selectedElection = electionsList.get(position);
 
                         // Start the AllCandidateActivity with the selected election's ID
-                        Intent intent = new Intent(ElectionActivity.this, AllCandidateActivity.class);
+//                        Intent intent = new Intent(ElectionActivity.this, AllCandidateActivity.class);
 
                         Log.d("Election","selected : "+selectedElection);
 
-                        startActivity(intent);
+//                        startActivity(intent);
                     }
                 }
 

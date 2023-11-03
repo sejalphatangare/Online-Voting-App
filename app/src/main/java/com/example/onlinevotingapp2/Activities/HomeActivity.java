@@ -49,18 +49,6 @@ public class HomeActivity extends AppCompatActivity {
         sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean(IsLogIn, false);
 
-//        if (!isLoggedIn) {
-//            // The user is not logged in; navigate back to the login activity
-//            startActivity(new Intent(this, LoginActivity.class));
-//            finish(); // Close the current activity
-//        }
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        if (user == null) {
-//            // The user is not logged in; navigate back to the login activity
-//            startActivity(new Intent(this, LoginActivity.class));
-//            finish(); // Close the current activity
-//        }
-
         firebaseFirestore = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
@@ -114,14 +102,14 @@ public class HomeActivity extends AppCompatActivity {
                                 manageElectionBtn.setVisibility(View.VISIBLE);
                                 startBtn.setVisibility(View.GONE);
                                 voteBtn.setVisibility(View.GONE);
-                                showAllElections.setVisibility(View.VISIBLE);
+                                showAllElections.setVisibility(View.GONE);
                             } else {
                                 createBtn.setVisibility(View.GONE);
                                 startBtn.setVisibility(View.GONE);
-                                voteBtn.setVisibility(View.VISIBLE);
+                                voteBtn.setVisibility(View.GONE);
                                 createElectionBtn.setVisibility(View.GONE);
                                 manageElectionBtn.setVisibility(View.GONE);
-                                showAllElections.setVisibility(View.GONE);
+                                showAllElections.setVisibility(View.VISIBLE);
 
                                 Log.d("UserRole", "User is not admin");
                             }
@@ -198,7 +186,7 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
         SharedPreferences.Editor pref = sharedPreferences.edit();
         if (id == R.id.show_result) {
-            startActivity(new Intent(HomeActivity.this,ResultActivity.class));
+            startActivity(new Intent(HomeActivity.this,ResultActivityElection.class));
 
             return true;
         } else if (id == R.id.log_out) {
