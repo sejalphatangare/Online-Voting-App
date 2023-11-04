@@ -51,7 +51,6 @@ public class CandidateResultAdapter extends RecyclerView.Adapter<CandidateResult
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.name.setText(list.get(position).getName());
         holder.party.setText(list.get(position).getParty());
-        holder.position.setText(list.get(position).getPosition());
 
         Glide.with(context).load(list.get(position).getImage()).into(holder.image);
 
@@ -90,14 +89,13 @@ public class CandidateResultAdapter extends RecyclerView.Adapter<CandidateResult
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private CircleImageView image;
-        private TextView name,position,party,result;
+        private TextView name,party,result;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             image=itemView.findViewById(R.id.image);
             name=itemView.findViewById(R.id.name);
-            position=itemView.findViewById(R.id.post);
             party=itemView.findViewById(R.id.party);
             result=itemView.findViewById(R.id.candidate_result);
         }

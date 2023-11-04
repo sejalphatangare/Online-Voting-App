@@ -26,10 +26,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.ResultActivityElection"
+            android:name=".Activities.UpdateCandidateActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.AllElectionsActivity"
+            android:name=".Activities.ResultActivityElection"
             android:exported="false" />
         <activity
             android:name=".Activities.ManageElectionActivity"

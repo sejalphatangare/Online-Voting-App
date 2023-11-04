@@ -45,8 +45,7 @@ public class Create_Candidate_Activity extends AppCompatActivity {
 
     private CircleImageView candidateImg;
     private EditText candidateName,candidateParty;
-    private Spinner candidateSpinner,electionSpinner;
-    private String[] candPost={"President","Vice-President"};
+    private Spinner electionSpinner;
     private Button submitButton;
     private Uri mainUri=null;
     private StorageReference reference;
@@ -67,14 +66,9 @@ public class Create_Candidate_Activity extends AppCompatActivity {
         candidateImg=findViewById(R.id.candidate_image);
         candidateName=findViewById(R.id.candidate_name);
         candidateParty=findViewById(R.id.candidate_party_name);
-        candidateSpinner=findViewById(R.id.candidate_spinner);
+
         electionSpinner=findViewById(R.id.election_spinner);
         submitButton=findViewById(R.id.candidate_submit_btn);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line,candPost);
-
-        candidateSpinner.setAdapter(adapter);
 
         fetchElectionsAndPopulateSpinner();
 
@@ -90,11 +84,10 @@ public class Create_Candidate_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 String name=candidateName.getText().toString().trim();
                 String party=candidateParty.getText().toString().trim();
-                String post=candidateSpinner.getSelectedItem().toString();
                 String electionId=electionSpinner.getSelectedItem().toString();
 
 
-                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(party) && !TextUtils.isEmpty(post) && mainUri!=null){
+                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(party)  && mainUri!=null){
 
 
                     String newCandidateDocumentId = firebaseFirestore.collection("Candidate").document().getId();
@@ -112,7 +105,6 @@ public class Create_Candidate_Activity extends AppCompatActivity {
                                         Map<String,Object> map= new HashMap<>();
                                         map.put("name",name);
                                         map.put("party",party);
-                                        map.put("post",post);
                                         map.put("image",uri.toString());
                                         map.put("electionId",electionId);
                                         map.put("timestamp", FieldValue.serverTimestamp());

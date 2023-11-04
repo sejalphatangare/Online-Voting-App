@@ -87,7 +87,6 @@ public class AllCandidateActivity extends AppCompatActivity {
                                     list.add(new Candidate(
                                             snapshot.getString("name"),
                                             snapshot.getString("party"),
-                                            snapshot.getString("post"),
                                             snapshot.getString("image"),
                                             snapshot.getId(),
                                             snapshot.getString("electionId")
@@ -114,14 +113,19 @@ public class AllCandidateActivity extends AppCompatActivity {
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        List<String> voteList = (List<String>)(documentSnapshot.get("votelist"));
-                        if (voteList != null && voteList.contains(electionId)) {
-                            if (voteList.contains(electionId)) {
-                                Toast.makeText(AllCandidateActivity.this, "You have already voted for this election.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(AllCandidateActivity.this, ElectionActivity.class));
-                                finish();
+                        if(documentSnapshot.get("name").equals("admin")){
+
+                        }else{
+                            List<String> voteList = (List<String>)(documentSnapshot.get("votelist"));
+                            if (voteList != null && voteList.contains(electionId)) {
+                                if (voteList.contains(electionId)) {
+                                    Toast.makeText(AllCandidateActivity.this, "You have already voted for this election.", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(AllCandidateActivity.this, ElectionActivity.class));
+                                    finish();
+                                }
                             }
                         }
+
 
 
                     }

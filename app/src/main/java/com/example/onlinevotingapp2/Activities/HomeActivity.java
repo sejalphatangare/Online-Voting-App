@@ -2,6 +2,7 @@ package com.example.onlinevotingapp2.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,8 +38,9 @@ public class HomeActivity extends AppCompatActivity {
     private TextView nameTxt, aadharNoTxt;
     private String uid;
     private FirebaseFirestore firebaseFirestore;
-    private Button createBtn, voteBtn,startBtn,createElectionBtn, manageElectionBtn,showAllElections;
+    private Button createBtn,createElectionBtn, manageElectionBtn,showAllElections;
 
+    private CardView cardViewadmin_btn,cardViewcreate_election_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +64,13 @@ public class HomeActivity extends AppCompatActivity {
         nameTxt = findViewById(R.id.name);
         aadharNoTxt = findViewById(R.id.aadhar_no);
         createBtn = findViewById(R.id.admin_btn);
-        voteBtn = findViewById(R.id.give_vote);
-        startBtn=findViewById(R.id.candidate_create_voting);
+//        voteBtn = findViewById(R.id.give_vote);
+
         createElectionBtn = findViewById(R.id.create_election_btn);
-        manageElectionBtn = findViewById(R.id.manage_election_btn);
+//        manageElectionBtn = findViewById(R.id.manage_election_btn);
         showAllElections = findViewById(R.id.showallelections);
+        cardViewadmin_btn=findViewById(R.id.cardviewadmin_btn);
+        cardViewcreate_election_btn=findViewById(R.id.cardviewcreate_election_btn);
 
         sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor pref = sharedPreferences.edit();
@@ -99,17 +103,20 @@ public class HomeActivity extends AppCompatActivity {
                             if (name.equals("admin")) {
                                 createBtn.setVisibility(View.VISIBLE);
                                 createElectionBtn.setVisibility(View.VISIBLE);
-                                manageElectionBtn.setVisibility(View.VISIBLE);
-                                startBtn.setVisibility(View.GONE);
-                                voteBtn.setVisibility(View.GONE);
-                                showAllElections.setVisibility(View.GONE);
-                            } else {
-                                createBtn.setVisibility(View.GONE);
-                                startBtn.setVisibility(View.GONE);
-                                voteBtn.setVisibility(View.GONE);
-                                createElectionBtn.setVisibility(View.GONE);
-                                manageElectionBtn.setVisibility(View.GONE);
+//                                manageElectionBtn.setVisibility(View.VISIBLE);
+//                                voteBtn.setVisibility(View.GONE);
                                 showAllElections.setVisibility(View.VISIBLE);
+                                cardViewadmin_btn.setVisibility(View.VISIBLE);
+                                cardViewcreate_election_btn.setVisibility(View.VISIBLE);
+                            } else {
+//                                createBtn.setVisibility(View.GONE);
+                                createBtn.setVisibility(View.GONE);
+//                                voteBtn.setVisibility(View.GONE);
+                                createElectionBtn.setVisibility(View.GONE);
+//                                manageElectionBtn.setVisibility(View.GONE);
+                                showAllElections.setVisibility(View.VISIBLE);
+                                cardViewcreate_election_btn.setVisibility(View.GONE);
+                                cardViewadmin_btn.setVisibility(View.GONE);
 
                                 Log.d("UserRole", "User is not admin");
                             }
@@ -125,26 +132,26 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
 
-        createBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        createBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                startActivity(new Intent(HomeActivity.this, Create_Candidate_Activity.class));
+//            }
+//        });
+//        createBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(HomeActivity.this,AllCandidateActivity.class));
+//            }
+//        });
 
-                startActivity(new Intent(HomeActivity.this, Create_Candidate_Activity.class));
-            }
-        });
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this,AllCandidateActivity.class));
-            }
-        });
-
-        voteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this,AllCandidateActivity.class));
-            }
-        });
+//        voteBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(HomeActivity.this,AllCandidateActivity.class));
+//            }
+//        });
 
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,12 +167,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        manageElectionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ManageElectionActivity.class));
-            }
-        });
+//        manageElectionBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(HomeActivity.this, ManageElectionActivity.class));
+//            }
+//        });
         showAllElections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +194,6 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences.Editor pref = sharedPreferences.edit();
         if (id == R.id.show_result) {
             startActivity(new Intent(HomeActivity.this,ResultActivityElection.class));
-
             return true;
         } else if (id == R.id.log_out) {
             FirebaseAuth.getInstance().signOut();

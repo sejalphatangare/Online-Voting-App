@@ -3,7 +3,6 @@ package com.example.onlinevotingapp2.Model;
 public class Candidate {
     private String name;
     private String party;
-    private String position;
     private String image;
     private String id;
     int count=0;
@@ -11,10 +10,9 @@ public class Candidate {
 
     private String ele_name;
 
-    public Candidate(String name, String party, String position, String image,String id,String ele_name) {
+    public Candidate(String name, String party,  String image,String id,String ele_name) {
         this.name = name;
         this.party = party;
-        this.position = position;
         this.image = image;
         this.id= id;
         this.ele_name=ele_name;
@@ -57,14 +55,6 @@ public class Candidate {
 
     public void setParty(String party) {
         this.party = party;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
     }
 
     public String getImage() {

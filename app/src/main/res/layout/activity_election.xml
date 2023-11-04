@@ -5,7 +5,7 @@
     android:id="@+id/election_rv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.AllElectionsActivity">
+    tools:context=".Activities.ElectionActivity">
 
 
     <Button

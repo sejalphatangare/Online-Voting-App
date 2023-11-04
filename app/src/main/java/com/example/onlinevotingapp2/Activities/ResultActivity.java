@@ -76,7 +76,6 @@ public class ResultActivity extends AppCompatActivity {
                                     list.add(new Candidate(
                                             snapshot.getString("name"),
                                             snapshot.getString("party"),
-                                            snapshot.getString("post"),
                                             snapshot.getString("image"),
                                             snapshot.getId(),
                                             snapshot.getString("electionId")
