@@ -36,8 +36,6 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,7 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
         userPassword=findViewById(R.id.user_Password);
         userEmail=findViewById(R.id.user_Email);
         userAadharNo=findViewById(R.id.user_aadharno);
-        signUpBtn=findViewById(R.id.signup_btn);
+        signUpBtn=findViewById(R.id.update_btn);
 
         mAuth=FirebaseAuth.getInstance();
 

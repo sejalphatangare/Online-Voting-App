@@ -38,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView nameTxt, aadharNoTxt;
     private String uid;
     private FirebaseFirestore firebaseFirestore;
-    private Button createBtn,createElectionBtn, manageElectionBtn,showAllElections;
+    private Button createBtn,createElectionBtn, manageElectionBtn,showAllElections,profileBtn;
 
     private CardView cardViewadmin_btn,cardViewcreate_election_btn;
 
@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         nameTxt = findViewById(R.id.name);
         aadharNoTxt = findViewById(R.id.aadhar_no);
         createBtn = findViewById(R.id.admin_btn);
+        profileBtn=findViewById(R.id.profile);
 //        voteBtn = findViewById(R.id.give_vote);
 
 
@@ -99,36 +100,40 @@ public class HomeActivity extends AppCompatActivity {
                             String aadharno = task.getResult().getString("aadharno");
                             String image = task.getResult().getString("image");
 
-                            Log.d("UserRole", "User name: " + name); // Add this line for debugging
-                            assert name != null;
-                            if (name.equals("admin")) {
-                                createBtn.setVisibility(View.VISIBLE);
-                                createElectionBtn.setVisibility(View.VISIBLE);
+//                            Log.d("UserRole", "User name: " + name); // Add this line for debugging
+                            if (name != null) {
+                                if (name.equals("admin")) {
+                                    createBtn.setVisibility(View.VISIBLE);
+                                    createElectionBtn.setVisibility(View.VISIBLE);
 //                                manageElectionBtn.setVisibility(View.VISIBLE);
 //                                voteBtn.setVisibility(View.GONE);
-                                showAllElections.setVisibility(View.VISIBLE);
-                                cardViewadmin_btn.setVisibility(View.VISIBLE);
-                                cardViewcreate_election_btn.setVisibility(View.VISIBLE);
-                            } else {
+                                    showAllElections.setVisibility(View.VISIBLE);
+                                    cardViewadmin_btn.setVisibility(View.VISIBLE);
+                                    cardViewcreate_election_btn.setVisibility(View.VISIBLE);
+                                } else {
 //                                createBtn.setVisibility(View.GONE);
-                                createBtn.setVisibility(View.GONE);
+                                    createBtn.setVisibility(View.GONE);
 //                                voteBtn.setVisibility(View.GONE);
-                                createElectionBtn.setVisibility(View.GONE);
+                                    createElectionBtn.setVisibility(View.GONE);
 //                                manageElectionBtn.setVisibility(View.GONE);
-                                showAllElections.setVisibility(View.VISIBLE);
-                                cardViewcreate_election_btn.setVisibility(View.GONE);
-                                cardViewadmin_btn.setVisibility(View.GONE);
+                                    showAllElections.setVisibility(View.VISIBLE);
+                                    cardViewcreate_election_btn.setVisibility(View.GONE);
+                                    cardViewadmin_btn.setVisibility(View.GONE);
 
-                                Log.d("UserRole", "User is not admin");
+                                    Log.d("UserRole", "User is not admin");
+                                }
+                                nameTxt.setText(name);
+                                aadharNoTxt.setText(aadharno);
+
+                                Log.d("ImageURL", "Image URL: " + image);
+                                Glide.with(HomeActivity.this).load(image).into(circleImg);
+
+                            } else {
+                                Toast.makeText(HomeActivity.this, "User not Found", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(HomeActivity.this,SignUpActivity.class));
+                                finish();
                             }
-                            nameTxt.setText(name);
-                            aadharNoTxt.setText(aadharno);
 
-                            Log.d("ImageURL", "Image URL: " + image);
-                            Glide.with(HomeActivity.this).load(image).into(circleImg);
-
-                        } else {
-                            Toast.makeText(HomeActivity.this, "User not Found", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -154,10 +159,18 @@ public class HomeActivity extends AppCompatActivity {
 //            }
 //        });
 
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this,ProfileActivity.class));
+                finish();
+            }
+        });
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeActivity.this, Create_Candidate_Activity.class));
+                finish();
             }
         });
 
@@ -165,6 +178,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeActivity.this, Create_Election_Activity.class));
+                finish();
             }
         });
 
@@ -178,6 +192,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeActivity.this,ElectionActivity.class));
+                finish();
             }
         });
     }
@@ -195,6 +210,7 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences.Editor pref = sharedPreferences.edit();
         if (id == R.id.show_result) {
             startActivity(new Intent(HomeActivity.this,ResultActivityElection.class));
+            finish();
             return true;
         } else if (id == R.id.log_out) {
             FirebaseAuth.getInstance().signOut();

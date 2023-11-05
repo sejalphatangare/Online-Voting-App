@@ -1,6 +1,5 @@
 package com.example.onlinevotingapp2.Activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,11 +9,7 @@ import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.example.onlinevotingapp2.MainActivity;
 import com.example.onlinevotingapp2.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SplashActivity extends AppCompatActivity {
 

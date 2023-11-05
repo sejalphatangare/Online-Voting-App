@@ -103,7 +103,11 @@ public class ResultActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         List<String> voteList = (List<String>)(documentSnapshot.get("votelist"));
-                        if (voteList.contains(electionId)) {
+                        if(Objects.equals(documentSnapshot.get("name"), "admin")){
+                            resultRV.setVisibility(View.VISIBLE);
+                            warningtxt.setVisibility(View.GONE);
+                        }
+                        else if (voteList.contains(electionId)) {
                             resultRV.setVisibility(View.VISIBLE);
                             warningtxt.setVisibility(View.GONE);
                         }else{
