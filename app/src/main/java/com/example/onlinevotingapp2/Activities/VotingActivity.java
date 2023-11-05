@@ -50,6 +50,7 @@ public class VotingActivity extends AppCompatActivity {
     private CandidateAdapter adapter;
     private FirebaseFirestore firebaseFirestore;
     List<Candidate> list;
+    private String candidateId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class VotingActivity extends AppCompatActivity {
         String nm = getIntent().getStringExtra("name");
         String part = getIntent().getStringExtra("party");
         String ele_name = getIntent().getStringExtra("ele_name");
-        String id = getIntent().getStringExtra("id");
+        candidateId = getIntent().getStringExtra("id");
 
 
         Glide.with(this).load(url).into(image);
@@ -133,21 +134,30 @@ public class VotingActivity extends AppCompatActivity {
                     }
                 });
 
-
-
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("VotingActivity","candidateId"+candidateId);
+                Intent intent=new Intent(VotingActivity.this, UpdateCandidateActivity.class);
+                intent.putExtra("id",candidateId);
+                startActivity(intent);
+                finish();
+            }
+        });
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 firebaseFirestore.collection("Candidate")
-                        .document(id) // Use the candidate's document ID
+                        .document(candidateId) // Use the candidate's document ID
                         .delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 for (Candidate candidate : list) {
-                                    if (candidate.getId().equals(id)) {
+                                    if (candidate.getId().equals(candidateId)) {
                                         list.remove(candidate);
                                         startActivity(new Intent(VotingActivity.this,ElectionActivity.class));
+                                        finish();
                                         break;
                                     }
                                 }
@@ -215,7 +225,7 @@ public class VotingActivity extends AppCompatActivity {
                 candidateMap.put("deviceIp", getDeviceIP());
                 candidateMap.put("timestamp", FieldValue.serverTimestamp());
 
-                firebaseFirestore.collection("Candidate/" + id + "/Vote")
+                firebaseFirestore.collection("Candidate/" + candidateId + "/Vote")
                         .document(uid)
                         .set(candidateMap)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

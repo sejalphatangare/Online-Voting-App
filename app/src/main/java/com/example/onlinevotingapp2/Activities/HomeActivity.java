@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         createBtn = findViewById(R.id.admin_btn);
 //        voteBtn = findViewById(R.id.give_vote);
 
+
         createElectionBtn = findViewById(R.id.create_election_btn);
 //        manageElectionBtn = findViewById(R.id.manage_election_btn);
         showAllElections = findViewById(R.id.showallelections);
