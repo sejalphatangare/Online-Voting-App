@@ -7,6 +7,9 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -268,5 +271,35 @@ public class VotingActivity extends AppCompatActivity {
             Toast.makeText(VotingActivity.this, ""+e, Toast.LENGTH_SHORT).show();
         }
         return null;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+//        SharedPreferences.Editor pref = sharedPreferences.edit();
+        if(id == R.id.home_activity){
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+            finish();
+        }
+        else if (id == R.id.show_result) {
+            startActivity(new Intent(getApplicationContext(),ResultActivityElection.class));
+            finish();
+            return true;
+        } else if (id == R.id.log_out) {
+            FirebaseAuth.getInstance().signOut();
+//            pref.putBoolean(IsLogIn, false);
+//            pref.apply();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 }

@@ -79,6 +79,8 @@ public class HomeActivity extends AppCompatActivity {
         pref.putBoolean(IsLogIn, true);
         pref.apply();
 
+        getSupportActionBar().setTitle("VoteEasy");
+
 //        findViewById(R.id.log_out).setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -208,7 +210,11 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         SharedPreferences.Editor pref = sharedPreferences.edit();
-        if (id == R.id.show_result) {
+        if(id == R.id.home_activity){
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+            finish();
+        }
+        else if (id == R.id.show_result) {
             startActivity(new Intent(HomeActivity.this,ResultActivityElection.class));
             finish();
             return true;

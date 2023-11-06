@@ -3,5 +3,17 @@
     <style name="Base.Theme.OnlineVotingApp2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+        <item name="colorPrimary">#1e90ff</item>
+        <item name="colorPrimaryVariant">#3D187E</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!--        Secondary brand colors-->
+        <item name="colorSecondary">#00BCD4</item>
+        <item name="colorSecondaryVariant">#009688</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!--        Status bar color.-->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
 </resources>
