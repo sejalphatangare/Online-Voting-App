@@ -49,7 +49,7 @@ public class UpdateCandidateActivity extends AppCompatActivity {
     private String candidateId;
     private EditText name,party;
     private Spinner electionSpinner;
-    private Button updateBtn;
+    private Button updateBtn,backBtn;
     private CircleImageView image;
     private Uri mainUri=null;
     private StorageReference reference;
@@ -70,6 +70,7 @@ public class UpdateCandidateActivity extends AppCompatActivity {
         image=findViewById(R.id.candidate_image);
         electionSpinner=findViewById(R.id.election_spinner);
         updateBtn=findViewById(R.id.candidate_update_btn);
+        backBtn=findViewById(R.id.backbtn);
         fetchElectionsAndPopulateSpinner();
         loadCandidateDetails();
 
@@ -77,6 +78,14 @@ public class UpdateCandidateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cropImage();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UpdateCandidateActivity.this,AllCandidateActivity.class));
+                finish();
             }
         });
 

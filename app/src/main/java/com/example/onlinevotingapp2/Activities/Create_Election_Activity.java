@@ -49,10 +49,12 @@ public class Create_Election_Activity extends AppCompatActivity {
         startElectionDate = findViewById(R.id.startDatePicker);
         endElectionDate = findViewById(R.id.endDatePicker);
         backToMainPage = findViewById(R.id.backToInfoPageFromCreateElectionECA);
+
         backToMainPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                finish();
             }
         });
 

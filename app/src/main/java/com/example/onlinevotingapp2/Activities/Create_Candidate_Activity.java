@@ -46,7 +46,7 @@ public class Create_Candidate_Activity extends AppCompatActivity {
     private CircleImageView candidateImg;
     private EditText candidateName,candidateParty;
     private Spinner electionSpinner;
-    private Button submitButton;
+    private Button submitButton,backBtn;
     private Uri mainUri=null;
     private StorageReference reference;
     private FirebaseAuth firebaseAuth;
@@ -66,6 +66,7 @@ public class Create_Candidate_Activity extends AppCompatActivity {
         candidateImg=findViewById(R.id.candidate_image);
         candidateName=findViewById(R.id.candidate_name);
         candidateParty=findViewById(R.id.candidate_party_name);
+        backBtn=findViewById(R.id.backbtn);
 
         electionSpinner=findViewById(R.id.election_spinner);
         submitButton=findViewById(R.id.candidate_submit_btn);
@@ -76,6 +77,14 @@ public class Create_Candidate_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cropImage();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Create_Candidate_Activity.this,HomeActivity.class));
+                finish();
             }
         });
 

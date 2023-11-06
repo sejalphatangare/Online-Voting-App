@@ -41,7 +41,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     private EditText nameTxt,emailTxt,aadharnoTxt;
     private CircleImageView image;
-    private Button updateBtn;
+    private Button updateBtn,backBtn;
     private Uri mainUri=null;
     private String uid;
     private StorageReference reference;
@@ -59,6 +59,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         aadharnoTxt=findViewById(R.id.profileaadharno);
         updateBtn=findViewById(R.id.profile_update_btn);
         image=findViewById(R.id.profile_image);
+        backBtn=findViewById(R.id.backbtn);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         uid=user.getUid();
@@ -72,6 +73,13 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         });
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UpdateProfileActivity.this,ProfileActivity.class));
+                finish();
+            }
+        });
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

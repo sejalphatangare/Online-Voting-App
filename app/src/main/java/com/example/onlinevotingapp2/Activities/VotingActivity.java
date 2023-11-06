@@ -46,7 +46,7 @@ public class VotingActivity extends AppCompatActivity {
     private CircleImageView image;
     private TextView name, party;
     private CardView cardView;
-    private Button voteBtn,updateBtn,deleteBtn;
+    private Button voteBtn,updateBtn,deleteBtn,backBtn;
     private CandidateAdapter adapter;
     private FirebaseFirestore firebaseFirestore;
     List<Candidate> list;
@@ -65,6 +65,7 @@ public class VotingActivity extends AppCompatActivity {
         voteBtn = findViewById(R.id.vote_btn);
         updateBtn = findViewById(R.id.update_btn);
         deleteBtn = findViewById(R.id.delete_btn);
+        backBtn=findViewById(R.id.backbtn);
 
         list = new ArrayList<>();
 
@@ -83,6 +84,13 @@ public class VotingActivity extends AppCompatActivity {
 
         String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(VotingActivity.this,HomeActivity.class));
+                finish();
+            }
+        });
 
         firebaseFirestore.collection("Candidate")
                 .get()

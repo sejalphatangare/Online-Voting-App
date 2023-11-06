@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.AllCandidateActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/candidates_rv"
         android:layout_width="0dp"

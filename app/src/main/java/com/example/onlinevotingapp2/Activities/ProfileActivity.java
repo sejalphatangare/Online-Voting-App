@@ -25,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView nameTxt, emailTxt,aadharNoTxt;
     private String uid;
     private FirebaseFirestore firebaseFirestore;
-    private Button updateBtn,logout;
+    private Button updateBtn,logout,backBtn;
 
 
     @Override
@@ -40,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         logout=findViewById(R.id.logout);
         aadharNoTxt = findViewById(R.id.user_aadharno);
         firebaseFirestore = FirebaseFirestore.getInstance();
+        backBtn=findViewById(R.id.backbtn);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         uid=user.getUid();
@@ -52,6 +53,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this,HomeActivity.class));
+                finish();
             }
         });
 

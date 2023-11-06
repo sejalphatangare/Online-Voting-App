@@ -3,6 +3,7 @@ package com.example.onlinevotingapp2.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
     private EditText emailEdt;
-    private Button reset;
+    private Button reset,backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,15 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         emailEdt=findViewById(R.id.email_edit);
         reset=findViewById(R.id.reset_button);
+        backBtn=findViewById(R.id.backbtn);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ForgetPasswordActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
 
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
